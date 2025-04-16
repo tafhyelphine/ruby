@@ -1,0 +1,33 @@
+currency:
+
+class CurrencyController < ApplicationController
+    STATIC_RATES = {
+      'USD' => { 'INR' => 83.0, 'EUR' => 0.85 },
+      'INR' => { 'USD' => 0.012, 'EUR' => 0.0103 },
+      'EUR' => { 'USD' => 1.18, 'INR' => 97.0 }
+    }
+  
+    def convert
+      amount = params[:amount].to_f
+      from = params[:from_currency]
+      to = params[:to_currency]
+  
+      if STATIC_RATES[from] && STATIC_RATES[from][to]
+        rate = STATIC_RATES[from][to]
+        converted_amount = amount * rate
+  
+        render json: {
+          amount: amount,
+          from: from,
+          to: to,
+          rate: rate,
+          converted_amount: converted_amount.round(2)
+        }
+      else
+        render json: { error: 'Conversion rate not available' }, status: 400
+      end
+    end
+  end
+  
+  post '/convert', to: 'currency#convert'
+Content-Type: application/json

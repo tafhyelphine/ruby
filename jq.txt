@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz Style Questions</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .quiz {
+      max-width: 700px;
+      margin: auto;
+    }
+    .quiz-item {
+      border-bottom: 1px solid #ddd;
+      padding: 15px 0;
+    }
+    .question {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .options {
+      margin-left: 20px;
+    }
+    .option {
+      cursor: pointer;
+      margin-bottom: 5px;
+      color: #007bff;
+    }
+    .option:hover {
+      text-decoration: underline;
+    }
+    .answer {
+      display: none;
+      margin-top: 10px;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+<div class="quiz">
+  <div class="quiz-item">
+    <div class="question">1. What is the capital of France?</div>
+    <div class="options">
+      <div class="option" data-correct="false">Berlin</div>
+      <div class="option" data-correct="false">Madrid</div>
+      <div class="option" data-correct="true">Paris</div>
+      <div class="option" data-correct="false">Rome</div>
+    </div>
+    <div class="answer">Correct Answer: Paris 🇫🇷</div>
+  </div>
+
+  <div class="quiz-item">
+    <div class="question">2. Who wrote 'Hamlet'?</div>
+    <div class="options">
+      <div class="option" data-correct="true">William Shakespeare</div>
+      <div class="option" data-correct="false">Mark Twain</div>
+      <div class="option" data-correct="false">Jane Austen</div>
+      <div class="option" data-correct="false">Charles Dickens</div>
+    </div>
+    <div class="answer">Correct Answer: William Shakespeare 🎭</div>
+  </div>
+
+  <div class="quiz-item">
+    <div class="question">3. What is the boiling point of water?</div>
+    <div class="options">
+      <div class="option" data-correct="false">90°C</div>
+      <div class="option" data-correct="false">80°C</div>
+      <div class="option" data-correct="true">100°C</div>
+      <div class="option" data-correct="false">120°C</div>
+    </div>
+    <div class="answer">Correct Answer: 100°C 💧</div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $('.option').click(function () {
+      const parent = $(this).closest('.quiz-item');
+      const answer = parent.find('.answer');
+
+      // Slide up all other answers
+      $('.answer').not(answer).slideUp();
+
+      // Show the correct answer
+      answer.stop(true, true).slideToggle();
+    });
+  });
+</script>
+
+</body>
+</html>
+
+-------------------------------------------------------------------------------
+
+jscript quiz:
+
+CODE :
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 120vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .question {
+            font-size: 18px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .options label {
+            display: block;
+            margin: 5px 0;
+            padding: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-size: 16px;
+        }
+
+        .options input {
+            display: none;
+        }
+
+        /* Change background color of selected option */
+        .options input:checked + label {
+            background: #c0c0c0;
+            color: rgb(0, 0, 0);
+        }
+
+        button {
+            padding: 10px;
+            margin-top: 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .result {
+            font-size: 20px;
+            font-weight: bold;
+            color: green;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Interactive Quiz</h2>
+        <div id="quiz"></div>
+        <button id="submit">Submit Quiz</button>
+        <p class="result" id="result"></p>
+    </div>
+
+    <script>
+        // Quiz questions
+        const questions = [
+            {
+                question: "What is the capital of France?",
+                options: ["Berlin", "Madrid", "Paris", "Rome"],
+                answer: "Paris"
+            },
+            {
+                question: "Which is the largest planet in our solar system?",
+                options: ["Earth", "Mars", "Jupiter", "Venus"],
+                answer: "Jupiter"
+            },
+            {
+                question: "Who wrote 'To Kill a Mockingbird'?",
+                options: ["Harper Lee", "J.K. Rowling", "Ernest Hemingway", "Mark Twain"],
+                answer: "Harper Lee"
+            }
+        ];
+
+        const quizContainer = document.getElementById("quiz");
+        const submitButton = document.getElementById("submit");
+        const resultContainer = document.getElementById("result");
+
+        // Render questions
+        function loadQuiz() {
+            let output = "";
+            questions.forEach((q, index) => {
+                output += `
+                    <div class="question">${index + 1}. ${q.question}</div>
+                    <div class="options">
+                        ${q.options.map(option => `
+                            <input type="radio" id="q${index}_${option}" name="question${index}" value="${option}">
+                            <label for="q${index}_${option}">${option}</label>
+                        `).join('')}
+                    </div><br>
+                `;
+            });
+            quizContainer.innerHTML = output;
+        }
+
+        // Calculate Score
+        function calculateScore() {
+            let score = 0;
+            questions.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+                if (selectedOption && selectedOption.value === q.answer) {
+                    score++;
+                }
+            });
+            resultContainer.innerHTML = `Your Score: ${score} / ${questions.length}`;
+        }
+
+        // Load quiz on page load
+        loadQuiz();
+
+        // Submit quiz
+        submitButton.addEventListener("click", calculateScore);
+    </script>
+
+</body>
+</html>
+------------------------------------------------------------------------------
+
+countdown jquery:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limited-Time Deal</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        .deal-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 350px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .timer {
+            font-size: 24px;
+            font-weight: bold;
+            color: red;
+            margin: 10px 0;
+        }
+
+        .price {
+            font-size: 20px;
+            color: green;
+            margin: 10px 0;
+        }
+
+        button {
+            padding: 10px;
+            margin-top: 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        button:disabled {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="deal-container">
+        <h2>🔥 Limited-Time Deal! 🔥</h2>
+        <p class="price">Get this product for just <strong>$99</strong>!</p>
+        <p>Offer ends in:</p>
+        <div class="timer" id="countdown">05:00</div>
+        <button id="buyNow">Buy Now</button>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            let timeLeft = 300; // 5 minutes in seconds
+
+            function updateTimer() {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                seconds = seconds < 10 ? "0" + seconds : seconds; // Add leading zero
+                $("#countdown").text(`${minutes}:${seconds}`);
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    $("#buyNow").prop("disabled", true);
+                    $("#countdown").text("00:00");
+                } else {
+                    timeLeft--;
+                }
+            }
+
+            // Update timer every second
+            let timer = setInterval(updateTimer, 1000);
+        });
+    </script>
+
+</body>
+</html>
+
+====--------------------------------------------------
+realtime blog search:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Blog Search</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 500px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .article {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .highlight {
+            background-color: yellow;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>🔍 Real-Time Blog Search</h2>
+        <input type="text" id="searchBox" placeholder="Search articles...">
+        
+        <div id="articleList">
+            <div class="article">The importance of web security in modern applications.</div>
+            <div class="article">Top 10 JavaScript frameworks for 2025.</div>
+            <div class="article">How to improve website performance using caching techniques.</div>
+            <div class="article">Understanding the basics of Artificial Intelligence.</div>
+            <div class="article">The impact of 5G technology on mobile web browsing.</div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#searchBox").on("keyup", function() {
+                let searchText = $(this).val().toLowerCase();
+                
+                $(".article").each(function() {
+                    let articleText = $(this).text();
+                    let lowerCaseText = articleText.toLowerCase();
+
+                    if (searchText === "") {
+                        $(this).html(articleText).show();
+                    } else if (lowerCaseText.includes(searchText)) {
+                        let regex = new RegExp("(" + searchText + ")", "gi");
+                        let highlightedText = articleText.replace(regex, `<span class="highlight">$1</span>`);
+                        $(this).html(highlightedText).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
+
