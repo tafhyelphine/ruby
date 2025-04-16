@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Form Validation</title>
+  <style>
+    body { font-family: Arial; background: #f2f2f2; padding: 20px; }
+    form { background: #fff; padding: 20px; border-radius: 8px; width: 350px; }
+    input, select { width: 100%; padding: 10px; margin-bottom: 10px; }
+    .error { color: red; font-size: 0.9em; }
+  </style>
+</head>
+<body>
+
+<h2>Payment Form</h2>
+<form id="paymentForm">
+  <label>Name:</label>
+  <input type="text" id="name" placeholder="John Doe">
+  <div class="error" id="nameError"></div>
+
+  <label>Credit Card Number:</label>
+  <input type="text" id="card" maxlength="16" placeholder="4111222233334444">
+  <div class="error" id="cardError"></div>
+
+  <label>CVV:</label>
+  <input type="text" id="cvv" maxlength="3" placeholder="123">
+  <div class="error" id="cvvError"></div>
+
+  <label>Expiry Date:</label>
+  <select id="month"></select>
+  <select id="year"></select>
+  <div class="error" id="expiryError"></div>
+
+  <button type="submit">Submit</button>
+</form>
+
+<script>
+  // Generate month and year dropdowns dynamically
+  const monthSelect = document.getElementById("month");
+  const yearSelect = document.getElementById("year");
+  const currentYear = new Date().getFullYear();
+
+  for (let m = 1; m <= 12; m++) {
+    const option = new Option(m.toString().padStart(2, '0'), m);
+    monthSelect.add(option);
+  }
+
+  for (let y = 0; y <= 10; y++) {
+    const option = new Option(currentYear + y, currentYear + y);
+    yearSelect.add(option);
+  }
+
+  // Validation Function
+  document.getElementById("paymentForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    let valid = true;
+
+    // Name Validation
+    const name = document.getElementById("name").value.trim();
+    if (!/^[A-Za-z ]+$/.test(name)) {
+      document.getElementById("nameError").textContent = "Name must contain only letters.";
+      valid = false;
+    } else {
+      document.getElementById("nameError").textContent = "";
+    }
+
+    // Card Number Validation
+    const card = document.getElementById("card").value.trim();
+    if (!/^[4-6][0-9]{15}$/.test(card)) {
+      document.getElementById("cardError").textContent = "Invalid card number (must start with 4/5/6 and be 16 digits).";
+      valid = false;
+    } else {
+      document.getElementById("cardError").textContent = "";
+    }
+
+    // CVV Validation
+    const cvv = document.getElementById("cvv").value.trim();
+    if (!/^[0-9]{3}$/.test(cvv)) {
+      document.getElementById("cvvError").textContent = "CVV must be 3 digits.";
+      valid = false;
+    } else {
+      document.getElementById("cvvError").textContent = "";
+    }
+
+    // Expiry Date Validation
+    const selectedMonth = parseInt(monthSelect.value);
+    const selectedYear = parseInt(yearSelect.value);
+    const today = new Date();
+    const expiryDate = new Date(selectedYear, selectedMonth - 1);
+
+    if (expiryDate <= today) {
+      document.getElementById("expiryError").textContent = "Expiry must be a future date.";
+      valid = false;
+    } else {
+      document.getElementById("expiryError").textContent = "";
+    }
+
+    if (valid) {
+      alert("Form Submitted Successfully!");
+    }
+  });
+
+  // Auto-focus movement
+  document.getElementById("name").addEventListener("input", function () {
+    if (/^[A-Za-z ]+$/.test(this.value)) {
+      document.getElementById("card").focus();
+    }
+  });
+
+  document.getElementById("card").addEventListener("input", function () {
+    if (/^[4-6][0-9]{15}$/.test(this.value)) {
+      document.getElementById("cvv").focus();
+    }
+  });
+
+  document.getElementById("cvv").addEventListener("input", function () {
+    if (/^[0-9]{3}$/.test(this.value)) {
+      document.getElementById("month").focus();
+    }
+  });
+</script>
+
+</body>
+</html>
